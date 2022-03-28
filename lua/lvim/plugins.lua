@@ -25,7 +25,7 @@ local commit = {
   nvim_treesitter = "fd92e70c69330dd8f2f6753d3d987c34e7dacd24",
   nvim_ts_context_commentstring = "097df33c9ef5bbd3828105e4bee99965b758dc3f",
   nvim_web_devicons = "4415d1aaa56f73b9c05795af84d625c610b05d3b",
-  onedarker = "b00dd2189f264c5aeb4cf04c59439655ecd573ec",
+  onedarker = "d598542de9843bd1157736dddd0dfa2c14ca367d",
   packer = "c576ab3f1488ee86d60fd340d01ade08dcabd256",
   plenary = "14dfb4071022b22e08384ee125a5607464b6d397",
   popup = "b7404d35d5d3548a82149238289fa71f7f6de4ac",
@@ -53,7 +53,7 @@ return {
     commit = commit.nvim_lsp_installer,
   },
   {
-    "lunarvim/onedarker.nvim",
+    "mfauzaan/onedarker.nvim",
     config = function()
       require("onedarker").setup()
       lvim.builtin.lualine.options.theme = "onedarker"

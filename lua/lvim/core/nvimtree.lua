@@ -49,11 +49,11 @@ function M.config()
       },
       git = {
         enable = true,
-        ignore = false,
+        ignore = true,
         timeout = 200,
       },
       view = {
-        width = 30,
+        width = 36,
         height = 30,
         hide_root_folder = false,
         side = "left",
@@ -68,7 +68,8 @@ function M.config()
       },
       filters = {
         dotfiles = false,
-        custom = { "node_modules", ".cache" },
+        custom = { "node_modules", ".cache", ".DS_Store", "dist", ".git" },
+        exclude = { ".env" }
       },
       trash = {
         cmd = "trash",
