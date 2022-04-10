@@ -40,44 +40,45 @@ local commit = {
 
 return {
   -- Packer can manage itself as an optional plugin
-  { "wbthomason/packer.nvim", commit = commit.packer },
-  { "neovim/nvim-lspconfig", commit = commit.nvim_lspconfig },
-  { "tamago324/nlsp-settings.nvim", commit = commit.nlsp_settings },
+  { "wbthomason/packer.nvim" },
+  { "neovim/nvim-lspconfig" },
+  { "tamago324/nlsp-settings.nvim" },
   {
     "jose-elias-alvarez/null-ls.nvim",
-    commit = commit.null_ls,
   },
-  { "antoinemadec/FixCursorHold.nvim", commit = commit.fixcursorhold }, -- Needed while issue https://github.com/neovim/neovim/issues/12587 is still open
+  { "antoinemadec/FixCursorHold.nvim" }, -- Needed while issue https://github.com/neovim/neovim/issues/12587 is still open
   {
     "williamboman/nvim-lsp-installer",
-    commit = commit.nvim_lsp_installer,
   },
   {
     "mfauzaan/onedarker.nvim",
     config = function()
-      require("onedarker").setup()
-      lvim.builtin.lualine.options.theme = "onedarker"
+      pcall(function()
+        if lvim and lvim.colorscheme == "onedarker" then
+          require("onedarker").setup()
+          lvim.builtin.lualine.options.theme = "onedarker"
+        end
+      end)
     end,
-    commit = commit.onedarker,
     disable = lvim.colorscheme ~= "onedarker",
   },
   {
     "rcarriga/nvim-notify",
-    commit = commit.nvim_notify,
+
     config = function()
       require("lvim.core.notify").setup()
     end,
     requires = { "nvim-telescope/telescope.nvim" },
     disable = not lvim.builtin.notify.active or not lvim.builtin.telescope.active,
   },
-  { "Tastyep/structlog.nvim", commit = commit.structlog },
+  { "Tastyep/structlog.nvim" },
 
-  { "nvim-lua/popup.nvim", commit = commit.popup },
-  { "nvim-lua/plenary.nvim", commit = commit.plenary },
+  { "nvim-lua/popup.nvim" },
+  { "nvim-lua/plenary.nvim" },
   -- Telescope
   {
     "nvim-telescope/telescope.nvim",
-    commit = commit.telescope,
+
     config = function()
       require("lvim.core.telescope").setup()
     end,
@@ -86,14 +87,12 @@ return {
   {
     "nvim-telescope/telescope-fzf-native.nvim",
     requires = { "nvim-telescope/telescope.nvim" },
-    commit = commit.telescope_fzf_native,
     run = "make",
     disable = not lvim.builtin.telescope.active,
   },
   -- Install nvim-cmp, and buffer source as a dependency
   {
     "hrsh7th/nvim-cmp",
-    commit = commit.nvim_cmp,
     config = function()
       if lvim.builtin.cmp then
         require("lvim.core.cmp").setup()
@@ -106,41 +105,33 @@ return {
   },
   {
     "rafamadriz/friendly-snippets",
-    commit = commit.friendly_snippets,
   },
   {
     "L3MON4D3/LuaSnip",
     config = function()
       require("luasnip/loaders/from_vscode").lazy_load()
     end,
-    commit = commit.luasnip,
   },
   {
     "hrsh7th/cmp-nvim-lsp",
-    commit = commit.cmp_nvim_lsp,
   },
   {
     "saadparwaiz1/cmp_luasnip",
-    commit = commit.cmp_luasnip,
   },
   {
     "hrsh7th/cmp-buffer",
-    commit = commit.cmp_buffer,
   },
   {
     "hrsh7th/cmp-path",
-    commit = commit.cmp_path,
   },
   {
     "folke/lua-dev.nvim",
     module = "lua-dev",
-    commit = commit.lua_dev,
   },
 
   -- Autopairs
   {
     "windwp/nvim-autopairs",
-    commit = commit.nvim_autopairs,
     -- event = "InsertEnter",
     config = function()
       require("lvim.core.autopairs").setup()
@@ -151,7 +142,6 @@ return {
   -- Treesitter
   {
     "nvim-treesitter/nvim-treesitter",
-    commit = commit.nvim_treesitter,
     branch = vim.fn.has "nvim-0.6" == 1 and "master" or "0.5-compat",
     -- run = ":TSUpdate",
     config = function()
@@ -160,7 +150,6 @@ return {
   },
   {
     "JoosepAlviste/nvim-ts-context-commentstring",
-    commit = commit.nvim_ts_context_commentstring,
     event = "BufReadPost",
   },
 
@@ -169,7 +158,6 @@ return {
     "kyazdani42/nvim-tree.lua",
     -- event = "BufWinOpen",
     -- cmd = "NvimTreeToggle",
-    commit = commit.nvim_tree,
     config = function()
       require("lvim.core.nvimtree").setup()
     end,
@@ -178,7 +166,6 @@ return {
 
   {
     "lewis6991/gitsigns.nvim",
-    commit = commit.gitsigns,
 
     config = function()
       require("lvim.core.gitsigns").setup()
@@ -190,7 +177,6 @@ return {
   -- Whichkey
   {
     "folke/which-key.nvim",
-    commit = commit.which_key,
     config = function()
       require("lvim.core.which-key").setup()
     end,
@@ -201,7 +187,6 @@ return {
   -- Comments
   {
     "numToStr/Comment.nvim",
-    commit = commit.comment,
     event = "BufRead",
     config = function()
       require("lvim.core.comment").setup()
@@ -212,7 +197,6 @@ return {
   -- project.nvim
   {
     "ahmedkhalf/project.nvim",
-    commit = commit.project,
     config = function()
       require("lvim.core.project").setup()
     end,
@@ -220,13 +204,12 @@ return {
   },
 
   -- Icons
-  { "kyazdani42/nvim-web-devicons", commit = commit.nvim_web_devicons },
+  { "kyazdani42/nvim-web-devicons" },
 
   -- Status Line and Bufferline
   {
     -- "hoob3rt/lualine.nvim",
     "nvim-lualine/lualine.nvim",
-    commit = commit.lualine,
     -- "Lunarvim/lualine.nvim",
     config = function()
       require("lvim.core.lualine").setup()
@@ -236,7 +219,6 @@ return {
 
   {
     "akinsho/bufferline.nvim",
-    commit = commit.bufferline,
     config = function()
       require("lvim.core.bufferline").setup()
     end,
@@ -247,7 +229,6 @@ return {
   -- Debugging
   {
     "mfussenegger/nvim-dap",
-    commit = commit.nvim_dap,
     -- event = "BufWinEnter",
     config = function()
       require("lvim.core.dap").setup()
@@ -258,7 +239,6 @@ return {
   -- Debugger management
   {
     "Pocco81/DAPInstall.nvim",
-    commit = commit.dapinstall,
     -- event = "BufWinEnter",
     -- event = "BufRead",
     disable = not lvim.builtin.dap.active,
@@ -270,14 +250,12 @@ return {
     config = function()
       require("lvim.core.alpha").setup()
     end,
-    commit = commit.alpha_nvim,
     disable = not lvim.builtin.alpha.active,
   },
 
   -- Terminal
   {
     "akinsho/toggleterm.nvim",
-    commit = commit.toggleterm,
     event = "BufWinEnter",
     config = function()
       require("lvim.core.terminal").setup()
@@ -288,6 +266,13 @@ return {
   -- SchemaStore
   {
     "b0o/schemastore.nvim",
-    commit = commit.schemastore,
   },
 }
+
+for _, entry in ipairs(core_plugins) do
+  if not os.getenv "LVIM_DEV_MODE" then
+    entry["lock"] = true
+  end
+end
+
+return core_plugins
