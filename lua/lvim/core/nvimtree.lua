@@ -108,7 +108,7 @@ function M.config()
         },
         open_file = {
           quit_on_open = false,
-          resize_window = false,
+          resize_window = true,
           window_picker = {
             enable = true,
             chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890",
@@ -173,6 +173,7 @@ function M.setup()
   local function telescope_find_files(_)
     require("lvim.core.nvimtree").start_telescope "find_files"
   end
+
   local function telescope_live_grep(_)
     require("lvim.core.nvimtree").start_telescope "live_grep"
   end
