@@ -244,6 +244,12 @@ local core_plugins = {
   {
     "b0o/schemastore.nvim",
   },
+
+  {
+    "nvim-telescope/telescope-ui-select.nvim",
+    requires = { "nvim-telescope/telescope.nvim" },
+    disable = not lvim.builtin.telescope.active,
+  },
 }
 
 for _, entry in ipairs(core_plugins) do
