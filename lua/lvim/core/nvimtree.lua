@@ -52,7 +52,7 @@ function M.config()
         timeout = 200,
       },
       view = {
-        width = 36,
+        width = 42,
         height = 30,
         hide_root_folder = false,
         side = "left",
