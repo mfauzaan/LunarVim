@@ -80,7 +80,7 @@ function M.config()
       },
       filters = {
         dotfiles = false,
-        custom = { "node_modules", ".cache", ".DS_Store", "dist", ".git", "\\.cache" },
+        custom = { ".cache", ".DS_Store", ".git", "\\.cache" },
         exclude = { ".env" }
       },
       trash = {
