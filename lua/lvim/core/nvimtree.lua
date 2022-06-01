@@ -24,6 +24,7 @@ function M.config()
         enable = true,
         auto_open = true,
       },
+      reload_on_bufenter = true,
       open_on_tab = false,
       hijack_cursor = false,
       update_cwd = false,
