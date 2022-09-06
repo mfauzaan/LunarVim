@@ -47,15 +47,10 @@ return {
     function()
       local utils = require "lvim.core.lualine.utils"
       if vim.bo.filetype == "python" then
-        local venv = os.getenv "CONDA_DEFAULT_ENV"
+        local venv = os.getenv "CONDA_DEFAULT_ENV" or os.getenv "VIRTUAL_ENV"
         if venv then
           return string.format("  (%s)", utils.env_cleanup(venv))
         end
-        venv = os.getenv "VIRTUAL_ENV"
-        if venv then
-          return string.format("  (%s)", utils.env_cleanup(venv))
-        end
-        return ""
       end
       return ""
     end,
@@ -70,13 +65,13 @@ return {
   },
   treesitter = {
     function()
-      local b = vim.api.nvim_get_current_buf()
-      if next(vim.treesitter.highlighter.active[b]) then
-        return ""
-      end
-      return ""
+      return ""
     end,
-    color = { fg = colors.green },
+    color = function()
+      local buf = vim.api.nvim_get_current_buf()
+      local ts = vim.treesitter.highlighter.active[buf]
+      return { fg = ts and not vim.tbl_isempty(ts) and colors.green or colors.red }
+    end,
     cond = conditions.hide_in_width,
   },
   lsp = {
