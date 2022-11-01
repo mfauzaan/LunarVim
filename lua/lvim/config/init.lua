@@ -46,6 +46,11 @@ function M:init()
       friendly_snippets = true,
     },
   }
+
+  ---@deprecated
+  lvim.builtin.notify = {
+    active = false
+  }
 end
 
 local function handle_deprecated_settings()
@@ -93,6 +98,13 @@ local function handle_deprecated_settings()
     deprecation_notice("lvim.builtin.dashboard", "Use `lvim.builtin.alpha` instead. See LunarVim#1906")
   end
 
+
+  -- notify.nvim
+  if lvim.builtin.notify.active then
+    deprecation_notice("lvim.builtin.notify", "See LunarVim#3294")
+  end
+
+
   if lvim.autocommands.custom_groups then
     deprecation_notice(
       "lvim.autocommands.custom_groups",
@@ -111,16 +123,22 @@ end
 --- Override the configuration with a user provided one
 -- @param config_path The path to the configuration overrides
 function M:load(config_path)
-  local autocmds = require "lvim.core.autocmds"
+  local autocmds = reload "lvim.core.autocmds"
   config_path = config_path or self:get_user_config_path()
   local ok, err = pcall(dofile, config_path)
   if not ok then
     if utils.is_file(user_config_file) then
       Log:warn("Invalid configuration: " .. err)
     else
-      vim.notify_once(string.format("Unable to find configuration file [%s]", config_path), vim.log.levels.WARN)
+      vim.notify_once(
+        string.format("User-configuration not found. Creating an example configuration in %s", config_path)
+      )
+      local example_config = join_paths(get_lvim_base_dir(), "utils", "installer", "config.example.lua")
+      vim.loop.fs_copyfile(example_config, config_path)
     end
   end
+
+  Log:set_level(lvim.log.level)
 
   handle_deprecated_settings()
 
@@ -128,10 +146,14 @@ function M:load(config_path)
 
   vim.g.mapleader = (lvim.leader == "space" and " ") or lvim.leader
 
-  require("lvim.keymappings").load(lvim.keys)
+  reload("lvim.keymappings").load(lvim.keys)
 
   if lvim.transparent_window then
     autocmds.enable_transparent_mode()
+  end
+
+  if lvim.reload_config_on_save then
+    autocmds.enable_reload_config_on_save()
   end
 end
 
@@ -139,17 +161,18 @@ end
 -- @param config_path The path to the configuration overrides
 function M:reload()
   vim.schedule(function()
-    require_clean("lvim.utils.hooks").run_pre_reload()
+    reload("lvim.utils.hooks").run_pre_reload()
 
     M:load()
 
-    require("lvim.core.autocmds").configure_format_on_save()
+    reload("lvim.core.autocmds").configure_format_on_save()
 
-    local plugins = require "lvim.plugins"
-    local plugin_loader = require "lvim.plugin-loader"
+    local plugins = reload "lvim.plugins"
+    local plugin_loader = reload "lvim.plugin-loader"
 
     plugin_loader.reload { plugins, lvim.plugins }
-    require_clean("lvim.utils.hooks").run_post_reload()
+    reload("lvim.core.theme").setup()
+    reload("lvim.utils.hooks").run_post_reload()
   end)
 end
 

@@ -1,6 +1,7 @@
 local M = {}
 
 local builtins = {
+  "lvim.core.theme",
   "lvim.core.which-key",
   "lvim.core.gitsigns",
   "lvim.core.cmp",
@@ -9,11 +10,14 @@ local builtins = {
   "lvim.core.telescope",
   "lvim.core.treesitter",
   "lvim.core.nvimtree",
+  "lvim.core.lir",
+  "lvim.core.illuminate",
+  "lvim.core.indentlines",
+  "lvim.core.breadcrumbs",
   "lvim.core.project",
   "lvim.core.bufferline",
   "lvim.core.autopairs",
   "lvim.core.comment",
-  "lvim.core.notify",
   "lvim.core.lualine",
   "lvim.core.alpha",
   "lvim.core.mason",
@@ -21,7 +25,8 @@ local builtins = {
 
 function M.config(config)
   for _, builtin_path in ipairs(builtins) do
-    local builtin = require(builtin_path)
+    local builtin = reload(builtin_path)
+
     builtin.config(config)
   end
 end
