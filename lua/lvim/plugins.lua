@@ -15,18 +15,6 @@ local core_plugins = {
     end,
   },
   {
-    "mfauzaan/onedarker.nvim",
-    config = function()
-      pcall(function()
-        if lvim and lvim.colorscheme == "onedarker" then
-          require("onedarker").setup()
-          lvim.builtin.lualine.options.theme = "onedarker"
-        end
-      end)
-    end,
-    disable = lvim.colorscheme ~= "onedarker",
-  },
-  {
     "rcarriga/nvim-notify",
     config = function()
       require("lvim.core.notify").setup()
@@ -302,6 +290,19 @@ local core_plugins = {
     end,
     disable = lvim.colorscheme ~= "onedarker",
   },
+
+  -- {
+  --   "mfauzaan/onedarker.nvim",
+  --   config = function()
+  --     pcall(function()
+  --       if lvim and lvim.colorscheme == "onedarker" then
+  --         require("onedarker").setup()
+  --         lvim.builtin.lualine.options.theme = "onedarker"
+  --       end
+  --     end)
+  --   end,
+  --   disable = lvim.colorscheme ~= "onedarker",
+  -- },
 }
 
 local default_snapshot_path = join_paths(get_lvim_base_dir(), "snapshots", "default.json")
