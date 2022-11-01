@@ -42,7 +42,6 @@ function M.config()
       },
       view = {
         width = 42,
-        height = 30,
         hide_root_folder = false,
         side = "left",
         mappings = {
