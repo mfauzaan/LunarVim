@@ -276,8 +276,22 @@ local core_plugins = {
     end,
     disable = not lvim.builtin.indentlines.active,
   },
+  -- {
+  --   "lunarvim/onedarker.nvim",
+  --   branch = "freeze",
+  --   config = function()
+  --     pcall(function()
+  --       if lvim and lvim.colorscheme == "onedarker" then
+  --         require("onedarker").setup()
+  --         lvim.builtin.lualine.options.theme = "onedarker"
+  --       end
+  --     end)
+  --   end,
+  --   disable = lvim.colorscheme ~= "onedarker",
+  -- },
+
   {
-    "lunarvim/onedarker.nvim",
+    "mfauzaan/onedarker.nvim",
     branch = "freeze",
     config = function()
       pcall(function()
