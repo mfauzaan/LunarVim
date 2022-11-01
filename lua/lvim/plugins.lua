@@ -292,7 +292,6 @@ local core_plugins = {
 
   {
     "mfauzaan/onedarker.nvim",
-    branch = "freeze",
     config = function()
       pcall(function()
         if lvim and lvim.colorscheme == "onedarker" then
