@@ -34,7 +34,7 @@ local core_plugins = {
     requires = { "nvim-telescope/telescope.nvim" },
     disable = not lvim.builtin.notify.active or not lvim.builtin.telescope.active,
   },
-  { "folke/tokyonight.nvim" }
+  { "folke/tokyonight.nvim" },
   { "Tastyep/structlog.nvim" },
 
   { "nvim-lua/popup.nvim" },
