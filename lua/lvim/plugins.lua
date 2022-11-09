@@ -23,8 +23,10 @@ local core_plugins = {
     disable = not lvim.builtin.notify.active or not lvim.builtin.telescope.active,
   },
   { "folke/tokyonight.nvim" },
+  {
+    "lunarvim/lunar.nvim",
+  },
   { "Tastyep/structlog.nvim" },
-
   { "nvim-lua/popup.nvim" },
   { "nvim-lua/plenary.nvim" },
   -- Telescope

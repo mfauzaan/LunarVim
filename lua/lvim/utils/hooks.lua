@@ -16,12 +16,11 @@ function M.run_on_packer_complete()
   Log:debug "Packer operation complete"
   vim.api.nvim_exec_autocmds("User", { pattern = "PackerComplete" })
 
+  -- -- FIXME(kylo252): nvim-tree.lua/lua/nvim-tree/view.lua:442: Invalid window id
+  -- vim.g.colors_name = lvim.colorscheme
+  -- pcall(vim.cmd.colorscheme, lvim.colorscheme)
+
   if M._reload_triggered then
-    if not in_headless then
-      vim.schedule(function()
-        pcall(vim.api.nvim_exec_autocmds, "ColorScheme", { pattern = "*" })
-      end)
-    end
     Log:debug "Reloaded configuration"
     M._reload_triggered = nil
   end
@@ -29,7 +28,6 @@ end
 
 function M.run_post_reload()
   Log:debug "Starting post-reload hook"
-  M.reset_cache()
   M._reload_triggered = true
 end
 
@@ -37,6 +35,7 @@ end
 ---It also forces regenerating any template ftplugin files
 ---Tip: Useful for clearing any outdated settings
 function M.reset_cache()
+  vim.cmd [[LuaCacheClear]]
   plugin_loader.recompile()
   local lvim_modules = {}
   for module, _ in pairs(package.loaded) do

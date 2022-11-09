@@ -128,6 +128,14 @@ M.config = function()
   end
 
   lvim.builtin.cmp = {
+    active = true,
+    enabled = function()
+      local buftype = vim.api.nvim_buf_get_option(0, "buftype")
+      if buftype == "prompt" then
+        return false
+      end
+      return lvim.builtin.cmp.active
+    end,
     confirm_opts = {
       behavior = cmp.ConfirmBehavior.Replace,
       select = false,

@@ -72,7 +72,7 @@ M.config = function()
         Variable = icons.Variable .. " ",
       },
       highlight = true,
-      separator = " " .. ">" .. " ",
+      separator = " " .. lvim.icons.ui.ChevronRight .. " ",
       depth_limit = 0,
       depth_limit_indicator = "..",
     },
@@ -154,8 +154,7 @@ local get_gps = function()
   end
 
   if not require("lvim.utils.functions").isempty(gps_location) then
-    -- TODO: replace with chevron
-    return ">" .. " " .. gps_location
+    return "%#NavicSeparator#".. lvim.icons.ui.ChevronRight .. "%* " .. gps_location
   else
     return ""
   end
@@ -212,10 +211,12 @@ M.create_winbar = function()
       {
         group = "_winbar",
         callback = function()
-          local status_ok, _ = pcall(vim.api.nvim_buf_get_var, 0, "lsp_floating_window")
-          if not status_ok then
-            -- TODO:
-            require("lvim.core.breadcrumbs").get_winbar()
+          if lvim.builtin.breadcrumbs.active then
+            local status_ok, _ = pcall(vim.api.nvim_buf_get_var, 0, "lsp_floating_window")
+            if not status_ok then
+              -- TODO:
+              require("lvim.core.breadcrumbs").get_winbar()
+            end
           end
         end,
       }
