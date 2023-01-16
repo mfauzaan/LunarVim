@@ -15,14 +15,6 @@ local core_plugins = {
       require("lvim.core.mason").setup()
     end,
   },
-  {
-    "rcarriga/nvim-notify",
-    config = function()
-      require("lvim.core.notify").setup()
-    end,
-    requires = { "nvim-telescope/telescope.nvim" },
-    disable = not lvim.builtin.notify.active or not lvim.builtin.telescope.active,
-  },
   { "folke/tokyonight.nvim" },
   {
     "lunarvim/lunar.nvim",
