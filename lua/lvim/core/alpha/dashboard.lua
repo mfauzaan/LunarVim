@@ -38,7 +38,7 @@ local banner = {
   "                                                    ",
   "                                                    ",
   "                                                    ",
-},
+}
 
 M.banner_small = {
   "  ⢀⣀                                                ⣰⣶   ⢀⣤⣄             ",
