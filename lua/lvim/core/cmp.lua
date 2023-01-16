@@ -129,6 +129,7 @@ M.config = function()
 
   lvim.builtin.cmp = {
     active = true,
+    on_config_done = nil,
     enabled = function()
       local buftype = vim.api.nvim_buf_get_option(0, "buftype")
       if buftype == "prompt" then
@@ -331,20 +332,17 @@ M.config = function()
             return -- success, exit early
           end
         end
-
-        if jumpable(1) and luasnip.jump(1) then
-          return -- success, exit early
-        end
         fallback() -- if not exited early, always fallback
       end),
     },
     cmdline = {
-      enable = true,
+      enable = false,
       options = {
         {
           type = ":",
           sources = {
             { name = "path" },
+            { name = "cmdline" },
           },
         },
         {
@@ -369,6 +367,10 @@ function M.setup()
         sources = option.sources,
       })
     end
+  end
+
+  if lvim.builtin.cmp.on_config_done then
+    lvim.builtin.cmp.on_config_done(cmp)
   end
 end
 

@@ -46,6 +46,11 @@ declare -a __pip_deps=(
   "pynvim"
 )
 
+declare -a __rust_deps=(
+  "fd::fd-find"
+  "rg::ripgrep"
+)
+
 function usage() {
   echo "Usage: install.sh [<options>]"
   echo ""
@@ -110,6 +115,10 @@ function confirm() {
   done
 }
 
+function stringify_array() {
+  echo -n "${@}" | sed 's/ /, /'
+}
+
 function main() {
   parse_arguments "$@"
 
@@ -122,13 +131,13 @@ function main() {
 
   if [ "$ARGS_INSTALL_DEPENDENCIES" -eq 1 ]; then
     if [ "$INTERACTIVE_MODE" -eq 1 ]; then
-      if confirm "Would you like to install LunarVim's NodeJS dependencies?"; then
+      if confirm "Would you like to install LunarVim's NodeJS dependencies: $(stringify_array ${__npm_deps[@]})?"; then
         install_nodejs_deps
       fi
-      if confirm "Would you like to install LunarVim's Python dependencies?"; then
+      if confirm "Would you like to install LunarVim's Python dependencies: $(stringify_array ${__pip_deps[@]})?"; then
         install_python_deps
       fi
-      if confirm "Would you like to install LunarVim's Rust dependencies?"; then
+      if confirm "Would you like to install LunarVim's Rust dependencies: $(stringify_array ${__rust_deps[@]})?"; then
         install_rust_deps
       fi
     else
@@ -213,7 +222,7 @@ function check_neovim_min_version() {
 function verify_core_plugins() {
   msg "Verifying core plugins"
   if ! bash "$LUNARVIM_BASE_DIR/utils/ci/verify_plugins.sh"; then
-    echo "[ERROR]: Unable to verify plugins, make sure to manually run ':PackerSync' when starting lvim for the first time."
+    echo "[ERROR]: Unable to verify plugins, make sure to manually run ':Lazy sync' when starting lvim for the first time."
     exit 1
   fi
   echo "Verification complete!"
@@ -335,8 +344,7 @@ function __attempt_to_install_with_cargo() {
 
 # we try to install the missing one with cargo even though it's unlikely to be found
 function install_rust_deps() {
-  local -a deps=("fd::fd-find" "rg::ripgrep")
-  for dep in "${deps[@]}"; do
+  for dep in "${__rust_deps[@]}"; do
     if ! command -v "${dep%%::*}" &>/dev/null; then
       __attempt_to_install_with_cargo "${dep##*::}"
     fi
@@ -356,10 +364,10 @@ function __backup_dir() {
   else
     case "$OS" in
       Darwin)
-        cp -R "$src/"* "$src.old/."
+        cp -R "$src/." "$src.old/."
         ;;
       *)
-        cp -r "$src/"* "$src.old/."
+        cp -r "$src/." "$src.old/."
         ;;
     esac
   fi
@@ -404,15 +412,10 @@ function setup_shim() {
 }
 
 function remove_old_cache_files() {
-  local packer_cache="$LUNARVIM_CONFIG_DIR/plugin/packer_compiled.lua"
-  if [ -e "$packer_cache" ]; then
-    msg "Removing old packer cache file"
-    rm -f "$packer_cache"
-  fi
-
-  if [ -e "$LUNARVIM_CACHE_DIR/luacache" ] || [ -e "$LUNARVIM_CACHE_DIR/lvim_cache" ]; then
-    msg "Removing old startup cache file"
-    rm -f "$LUNARVIM_CACHE_DIR/{luacache,lvim_cache}"
+  local lazy_cache="$LUNARVIM_CACHE_DIR/lazy/cache"
+  if [ -e "$lazy_cache" ]; then
+    msg "Removing old lazy cache file"
+    rm -f "$lazy_cache"
   fi
 }
 
@@ -427,13 +430,11 @@ function setup_lvim() {
   [ ! -f "$LUNARVIM_CONFIG_DIR/config.lua" ] \
     && cp "$LUNARVIM_BASE_DIR/utils/installer/config.example.lua" "$LUNARVIM_CONFIG_DIR/config.lua"
 
-  echo "Preparing Packer setup"
+  echo "Preparing Lazy setup"
 
-  "$INSTALL_PREFIX/bin/lvim" --headless \
-    -c 'autocmd User PackerComplete quitall' \
-    -c 'PackerSync'
+  "$INSTALL_PREFIX/bin/lvim" --headless -c 'quitall'
 
-  echo "Packer setup complete"
+  echo "Lazy setup complete"
 
   verify_core_plugins
 }
@@ -449,7 +450,7 @@ function create_desktop_file() {
     cp "$LUNARVIM_BASE_DIR/utils/desktop/$size_folder/lvim.svg" "$XDG_DATA_HOME/icons/hicolor/$size_folder/apps"
   done
 
-  xdg-desktop-menu install --novendor "$LUNARVIM_BASE_DIR/utils/desktop/lvim.desktop"
+  xdg-desktop-menu install --novendor "$LUNARVIM_BASE_DIR/utils/desktop/lvim.desktop" || true
 }
 
 function print_logo() {

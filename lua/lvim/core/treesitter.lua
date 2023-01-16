@@ -1,11 +1,27 @@
 local M = {}
 local Log = require "lvim.core.log"
 
-M.config = function()
+function M.config()
   lvim.builtin.treesitter = {
     on_config_done = nil,
-    ensure_installed = {}, -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+
+    -- A list of parser names, or "all"
+    ensure_installed = {},
+
+    -- List of parsers to ignore installing (for "all")
     ignore_install = {},
+
+    -- A directory to install the parsers into.
+    -- By default parsers are installed to either the package dir, or the "site" dir.
+    -- If a custom path is used (not nil) it must be added to the runtimepath.
+    parser_install_dir = nil,
+
+    -- Install parsers synchronously (only applied to `ensure_installed`)
+    sync_install = false,
+
+    -- Automatically install missing parsers when entering buffer
+    auto_install = true,
+
     matchup = {
       enable = false, -- mandatory, false will disable the whole extension
       -- disable = { "c", "ruby" },  -- optional, list of language that will be disabled
@@ -18,38 +34,8 @@ M.config = function()
           return true
         end
 
-        local max_filesize = 1024 * 1024
-        local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
-        if ok and stats and stats.size > max_filesize then
-          if lvim.builtin.illuminate.active then
-            pcall(require("illuminate").pause_buf)
-          end
-
-          vim.schedule(function()
-            vim.api.nvim_buf_call(buf, function()
-              vim.cmd "setlocal noswapfile noundofile"
-
-              if vim.tbl_contains({ "json" }, lang) then
-                vim.cmd "NoMatchParen"
-                vim.cmd "syntax off"
-                vim.cmd "syntax clear"
-                vim.cmd "setlocal nocursorline nolist bufhidden=unload"
-
-                vim.api.nvim_create_autocmd({ "BufDelete" }, {
-                  callback = function()
-                    vim.cmd "DoMatchParen"
-                    vim.cmd "syntax on"
-                  end,
-                  buffer = buf,
-                })
-              end
-            end)
-          end)
-
-          Log:info "File larger than 1MB, turned off treesitter for this buffer"
-
-          return true
-        end
+        local status_ok, big_file_detected = pcall(vim.api.nvim_buf_get_var, buf, "bigfile_disable_treesitter")
+        return status_ok and big_file_detected
       end,
     },
     context_commentstring = {
@@ -66,7 +52,7 @@ M.config = function()
         json = "",
       },
     },
-    indent = { enable = true, disable = { "yaml", "python" } },
+    indent = { enable = true, disable = { "yaml", "python", "c", "cpp" } },
     autotag = { enable = false },
     textobjects = {
       swap = {
@@ -109,7 +95,7 @@ M.config = function()
   }
 end
 
-M.setup = function()
+function M.setup()
   -- avoid running in headless mode since it's harder to detect failures
   if #vim.api.nvim_list_uis() == 0 then
     Log:debug "headless mode detected, skipping running setup for treesitter"

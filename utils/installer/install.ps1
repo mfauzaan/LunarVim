@@ -217,7 +217,7 @@ function setup_lvim() {
     $exampleConfig = "$env:LUNARVIM_BASE_DIR\utils\installer\config_win.example.lua"
     Copy-Item -Force "$exampleConfig" "$env:LUNARVIM_CONFIG_DIR\config.lua"
 
-    Write-Host "Make sure to run `:PackerSync` at first launch" -ForegroundColor Green
+    Write-Host "Make sure to run `:Lazy sync` at first launch" -ForegroundColor Green
 
     create_alias
 
@@ -231,7 +231,7 @@ function setup_lvim() {
 function validate_lunarvim_files() {
     Set-Alias lvim "$INSTALL_PREFIX\bin\lvim.ps1"
     try {
-        $verify_version_cmd='if v:errmsg != "" | cquit | else | quit | endif'
+        $verify_version_cmd="if v:errmsg != \`"\`" | cquit | else | quit | endif"
         Invoke-Command -ScriptBlock { lvim --headless -c 'LvimUpdate' -c "$verify_version_cmd" } -ErrorAction SilentlyContinue
     }
     catch {
