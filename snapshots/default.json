@@ -60,7 +60,7 @@
     "commit": "215b537"
   },
   "null-ls.nvim": {
-    "commit": "9bfaf62e42bdcd042df1230e9188487e62a112c0"
+    "commit": "6830a1e"
   },
   "nvim-autopairs": {
     "commit": "03580d7"
@@ -84,7 +84,7 @@
     "commit": "bac962c"
   },
   "nvim-treesitter": {
-    "commit": "b156939"
+    "commit": "9bfaf62e42bdcd042df1230e9188487e62a112c0"
   },
   "nvim-ts-context-commentstring": {
     "commit": "4a42b30"
