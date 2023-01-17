@@ -60,7 +60,7 @@
     "commit": "215b537"
   },
   "null-ls.nvim": {
-    "commit": "6830a1e"
+    "commit": "9bfaf62e42bdcd042df1230e9188487e62a112c0"
   },
   "nvim-autopairs": {
     "commit": "03580d7"
@@ -93,7 +93,7 @@
     "commit": "6c38926"
   },
   "onedarker.nvim": {
-    "commit": "21209be6640a393c46d4597b0e437368ac89e463"
+    "commit": "8452cbe62ba7e5f67df49c8278c717f5e3f4f11b"
   },
   "plenary.nvim": {
     "commit": "bb44479"
