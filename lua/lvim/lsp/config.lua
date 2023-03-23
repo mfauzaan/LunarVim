@@ -1,10 +1,12 @@
 local skipped_servers = {
   "angularls",
   "ansiblels",
+  "antlersls",
   "ccls",
   "csharp_ls",
   "cssmodules_ls",
   "denols",
+  "docker_compose_language_service",
   "ember",
   "emmet_ls",
   "eslint",
@@ -20,6 +22,7 @@ local skipped_servers = {
   "phpactor",
   "psalm",
   "pylsp",
+  "pyre",
   "quick_lint_js",
   "reason_ls",
   "rnix",
@@ -39,7 +42,9 @@ local skipped_servers = {
   "stylelint_lsp",
   "svlangserver",
   "tflint",
+  "unocss",
   "verible",
+  "vtsls",
   "vuels",
 }
 
@@ -56,7 +61,7 @@ return {
         { name = "DiagnosticSignError", text = lvim.icons.diagnostics.Error },
         { name = "DiagnosticSignWarn", text = lvim.icons.diagnostics.Warning },
         { name = "DiagnosticSignHint", text = lvim.icons.diagnostics.Hint },
-        { name = "DiagnosticSignInfo", text = lvim.icons.diagnostics.Info },
+        { name = "DiagnosticSignInfo", text = lvim.icons.diagnostics.Information },
       },
     },
     virtual_text = true,
@@ -96,12 +101,12 @@ return {
   },
   buffer_mappings = {
     normal_mode = {
-      ["K"] = { vim.lsp.buf.hover, "Show hover" },
-      ["gd"] = { vim.lsp.buf.definition, "Goto Definition" },
-      ["gD"] = { vim.lsp.buf.declaration, "Goto declaration" },
-      ["gr"] = { vim.lsp.buf.references, "Goto references" },
-      ["gI"] = { vim.lsp.buf.implementation, "Goto Implementation" },
-      ["gs"] = { vim.lsp.buf.signature_help, "show signature help" },
+      ["K"] = { "<cmd>lua vim.lsp.buf.hover()<cr>", "Show hover" },
+      ["gd"] = { "<cmd>lua vim.lsp.buf.definition()<cr>", "Goto definition" },
+      ["gD"] = { "<cmd>lua vim.lsp.buf.declaration()<cr>", "Goto Declaration" },
+      ["gr"] = { "<cmd>lua vim.lsp.buf.references()<cr>", "Goto references" },
+      ["gI"] = { "<cmd>lua vim.lsp.buf.implementation()<cr>", "Goto Implementation" },
+      ["gs"] = { "<cmd>lua vim.lsp.buf.signature_help()<cr>", "show signature help" },
       ["gl"] = {
         function()
           local config = lvim.lsp.diagnostics.float
