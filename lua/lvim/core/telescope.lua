@@ -105,9 +105,6 @@ function M.config()
         override_file_sorter = true, -- override the file sorter
         case_mode = "smart_case", -- or "ignore_case" or "respect_case"
       },
-      ["ui-select"] = {
-        require("telescope.themes").get_dropdown {},
-      },
     },
   }
 end
@@ -146,12 +143,6 @@ function M.setup()
   if lvim.builtin.telescope.extensions and lvim.builtin.telescope.extensions.fzf then
     pcall(function()
       require("telescope").load_extension "fzf"
-    end)
-  end
-
-  if lvim.builtin.telescope.extensions and lvim.builtin.telescope.extensions["ui-select"] then
-    pcall(function()
-      require("telescope").load_extension "ui-select"
     end)
   end
 end

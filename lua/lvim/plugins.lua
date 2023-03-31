@@ -307,12 +307,6 @@ local core_plugins = {
   },
 
   {
-    "nvim-telescope/telescope-ui-select.nvim",
-    requires = { "nvim-telescope/telescope.nvim" },
-    disable = not lvim.builtin.telescope.active,
-  },
-
-  {
     "RRethy/vim-illuminate",
     config = function()
       require("lvim.core.illuminate").setup()
@@ -329,22 +323,10 @@ local core_plugins = {
     event = "User FileOpened",
     enabled = lvim.builtin.indentlines.active,
   },
-  -- {
-  --   "lunarvim/onedarker.nvim",
-  --   branch = "freeze",
-  --   config = function()
-  --     pcall(function()
-  --       if lvim and lvim.colorscheme == "onedarker" then
-  --         require("onedarker").setup()
-  --         lvim.builtin.lualine.options.theme = "onedarker"
-  --       end
-  --     end)
-  --   end,
-  --   disable = lvim.colorscheme ~= "onedarker",
-  -- },
 
   {
-    "mfauzaan/onedarker.nvim",
+    "lunarvim/onedarker.nvim",
+    branch = "freeze",
     config = function()
       pcall(function()
         if lvim and lvim.colorscheme == "onedarker" then

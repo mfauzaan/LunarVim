@@ -106,7 +106,7 @@ M.config = function()
       ["c"] = { "<cmd>BufferKill<CR>", "Close Buffer" },
       ["f"] = {
         function()
-          require("lvim.core.telescope.custom-finders").find_project_files { previewer = false }
+          require("lvim.core.telescope.custom-finders").find_project_files { }
         end,
         "Find File",
       },
