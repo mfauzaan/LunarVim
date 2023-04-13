@@ -11,7 +11,6 @@ function M.config()
       hijack_cursor = false,
       hijack_netrw = true,
       hijack_unnamed_buffer_when_opening = false,
-      ignore_buffer_on_setup = false,
       sort_by = "name",
       root_dirs = {},
       prefer_startup_root = false,
@@ -260,12 +259,12 @@ function M.setup()
   -- Add useful keymaps
   if #lvim.builtin.nvimtree.setup.view.mappings.list == 0 then
     lvim.builtin.nvimtree.setup.view.mappings.list = {
-      { key = { "l", "<CR>", "o" }, action = "edit", mode = "n" },
-      { key = "h", action = "close_node" },
-      { key = "v", action = "vsplit" },
-      { key = "C", action = "cd" },
-      { key = "gtf", action = "telescope_find_files", action_cb = telescope_find_files },
-      { key = "gtg", action = "telescope_live_grep", action_cb = telescope_live_grep },
+      { key = { "l", "<CR>", "o" }, action = "edit",                 mode = "n" },
+      { key = "h",                  action = "close_node" },
+      { key = "v",                  action = "vsplit" },
+      { key = "C",                  action = "cd" },
+      { key = "gtf",                action = "telescope_find_files", action_cb = telescope_find_files },
+      { key = "gtg",                action = "telescope_live_grep",  action_cb = telescope_live_grep },
     }
   end
 
