@@ -22,8 +22,7 @@ function M.config()
       view = {
         adaptive_size = false,
         centralize_selection = true,
-        width = 42,
-        hide_root_folder = false,
+        width = 30,
         side = "left",
         preserve_window_proportions = false,
         number = false,
