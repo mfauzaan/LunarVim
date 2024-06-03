@@ -202,6 +202,7 @@ function M.config()
         open_file = {
           quit_on_open = false,
           resize_window = true,
+          eject = true,
           window_picker = {
             enable = true,
             picker = "default",
