@@ -46,10 +46,6 @@ if ! command -v tree-sitter &>/dev/null; then
   __npm_deps+=("tree-sitter-cli")
 fi
 
-declare -a __pip_deps=(
-  "pynvim"
-)
-
 declare -a __rust_deps=(
   "fd::fd-find"
   "rg::ripgrep"
@@ -138,15 +134,11 @@ function main() {
       if confirm "Would you like to install LunarVim's NodeJS/BunJS dependencies: $(stringify_array "${__npm_deps[@]}")?"; then
         install_nodejs_deps
       fi
-      if confirm "Would you like to install LunarVim's Python dependencies: $(stringify_array "${__pip_deps[@]}")?"; then
-        install_python_deps
-      fi
       if confirm "Would you like to install LunarVim's Rust dependencies: $(stringify_array "${__rust_deps[@]}")?"; then
         install_rust_deps
       fi
     else
       install_nodejs_deps
-      install_python_deps
       install_rust_deps
     fi
   fi
@@ -329,21 +321,6 @@ function install_nodejs_deps() {
   echo "check how to solve it: https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally"
 }
 
-function install_python_deps() {
-  echo "Verifying that pip is available.."
-  if ! python3 -m ensurepip >/dev/null; then
-    if ! python3 -m pip --version &>/dev/null; then
-      echo "[WARN]: skipping installing optional python dependencies"
-      return 1
-    fi
-  fi
-  echo "Installing with pip.."
-  for dep in "${__pip_deps[@]}"; do
-    python3 -m pip install --user "$dep" || return 1
-  done
-  echo "All Python dependencies are successfully installed"
-}
-
 function __attempt_to_install_with_cargo() {
   if command -v cargo &>/dev/null; then
     echo "Installing missing Rust dependency with cargo"
@@ -447,7 +424,7 @@ function setup_lvim() {
 
   "$INSTALL_PREFIX/bin/$NVIM_APPNAME" --headless -c 'quitall'
 
-  printf "\nLazy setup complete"
+  printf "\nLazy setup complete\n"
 
   verify_core_plugins
 }
